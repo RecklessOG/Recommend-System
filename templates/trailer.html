@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Trailer - Netflix Recommendation System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* Background Style */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-image: url("../static/image.jpg"); /* Make sure this path is correct */
+            background-color: #181818;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Trailer Section */
+        .trailer-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        /* Trailer Video Styling */
+        .trailer-video {
+            width: 100%;
+            max-width: 800px;
+            height: 450px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        .trailer-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .go-back-button {
+            background-color: #e50914;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background 0.3s ease;
+        }
+
+        .go-back-button:hover {
+            background-color: #b20710;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="trailer-container">
+            <h1 class="trailer-title">Movie Trailer</h1>
+
+            <!-- Display trailer iframe -->
+           {% if trailer_url %}
+    <iframe class="trailer-video" src="{{ trailer_url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% else %}
+    <iframe class="trailer-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% endif %}
+            <!-- Go Back Button -->
+            <a href="{{ url_for('home') }}">
+                <button class="go-back-button">Go Back to Homepage</button>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watchlist-Based Recommendations</title>
+    <link rel="stylesheet" href="/static/style.css"> <!-- Uses external CSS -->
+</head>
+<body>
+    <header>
+        <h1>Recommended Movies Based on Your Watchlist</h1>
+      <a href="/watchlist" class="btn btn-watchlist">Back to Watchlist</a>
+    </header>
+
+    <main>
+        {% if recommendations %}
+            <div class="movies-container">
+                {% for movie in recommendations %}
+    <div class="movie-card">
+        <img src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+        <h3>{{ movie.title }}</h3>
+        <p>Released: {{ movie.release_date }}</p>
+    </div>
+{% endfor %}
+        {% else %}
+            <p>No recommendations found based on your watchlist.</p>
+        {% endif %}
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/recommend.js"></script>
+
+</body>
+</html>

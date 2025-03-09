@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Recommendation System</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .recommendation-card {
+            position: relative;
+            display: inline-block;
+            width: 150px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .recommendation-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .recommendation-title {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .recommendation-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Profile and Home Buttons aligned to the top right */
+        .profile-dropdown {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex; /* Use flex to align buttons horizontally */
+            flex-direction: row; /* Align buttons side by side */
+            gap: 10px; /* Adds space between buttons */
+        }
+
+        .profile-btn, .home-btn {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .dropdown-menu {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body style="font-family: 'Noto Sans JP', sans-serif;">
+    <!-- Profile and Home Button Container -->
+   <div class="profile-dropdown">
+    <a href="{{ url_for('home') }}">
+        <button class="home-btn">Home</button>
+    </a>
+    <div class="dropdown">
+        <button class="profile-btn dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ user if user else 'Guest' }}
+        </button>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
+    {% if user %}
+        <a class="dropdown-item" href="{{ url_for('watchlist') }}">Watchlist</a>
+        <a class="dropdown-item" href="{{ url_for('edit_profile') }}">Edit Profile</a> <!-- Edit Profile Link -->
+        <!-- Submit Review Button -->
+        <button class="dropdown-item" onclick="window.location.href='{{ url_for('submit_review') }}'">Submit a Review</button>
+          <a class="dropdown-item" href="{{ url_for('ratings_page') }}">User Ratings</a>
+        <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+    {% else %}
+       <a class="dropdown-item" href="http://127.0.0.1/LOGIN/index.php?form=login">Login</a>
+<a class="dropdown-item" href="http://127.0.0.1/LOGIN/index.php?form=register">Register</a>
+
+    {% endif %}
+</div>
+    </div>
+</div>
+
+    <div class="ml-container" style="display: block;">
+        <center><h1>Netflix Recommender System</h1></center>
+        <div class="form-group shadow-textarea" style="margin-top: 30px;text-align: center;color: white;">
+            <input type="text" name="movie" class="movie form-control" id="autoComplete" autocomplete="off" placeholder="Enter the Movie Name/title" required="required" style="background-color: #ffffff; border-color:#ffffff; width: 60%; color: #181818"/>
+            <br>
+        </div>
+        <div class="form-group" style="text-align: center;">
+            <button class="btn btn-primary btn-block movie-button" style="background-color: #e50914; border-color: #e50914; width: 120px;" disabled="true">Search</button><br><br>
+        </div>
+        <div id="loader" class="text-center"></div>
+        <div class="fail">
+            <center><h3>Sorry! Try another movie name/title</h3></center>
+        </div>
+        <div class="results">
+            <center><h2 id="name" class="text-uppercase"></h2></center>
+        </div>
+        <div id="recommendations" class="recommendation-container"></div>
+
+
+    <!-- Actor Modal -->
+    <div id="actorModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+        <div class="modal-content" id="actorModalContent" style="background: white; margin: 10% auto; padding: 20px; border-radius: 10px; width: 50%; text-align: center; position: relative;">
+            <button id="closeModal" style="position: absolute; top: 10px; right: 15px; background: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">X</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/js/autoComplete.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='autocomplete.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='recommend.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+{% if not request.args.get('movie') %}
+    <div class="reviews-button-container">
+        <a href="{{ url_for('all_reviews') }}" class="reviews-button">What Users Are Saying?</a>
+    </div> <!-- Ensure this closing div is present -->
+{% endif %}
+
+</body>
+</html>

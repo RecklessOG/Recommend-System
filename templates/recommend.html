@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Recommendation System</h1>
+
+
+
+        <!-- Movie Search Input -->
+        <input type="text" id="autoComplete" placeholder="Search for a movie...">
+        <button class="movie-button" disabled>Search</button>
+
+        <!-- Loading Indicator -->
+        <div id="loader" class="loader"></div>
+
+        <!-- Movie Details Section -->
+        <div class="results" style="display: none;"><!-- Movie details will be injected here --></div>
+
+        <!-- Trailer Button (Initially hidden) -->
+<div id="trailerButtonContainer">
+  <a href="{{ url_for('trailer', movie_id=movie.id) }}">
+    <button id="trailerButton" class="btn btn-danger">Click Here for Trailer</button>
+  </a>
+</div>
+
+
+
+
+        <!-- Cast Section -->
+        <div id="cast-section" class="cast-container" style="display: none;"><!-- Cast details will be injected here --></div>
+
+        <!-- Recommendations Section -->
+        <div id="recommendations" class="recommendations"><!-- Movie cards will be appended here --></div>
+
+        <!-- Failure Message -->
+        <div class="fail" style="display: none;">No results found. Please try again.</div>
+    </div>
+
+   <!-- Actor Details Modal -->
+   <!-- Modal for Actor Details goes here -->
+
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="autocomplete.js"></script>
+    <script src="recommend.js"></script>
+
+<script>
+    $(function () {
+        $("#autoComplete").on("input", function () {
+            $(".movie-button").attr("disabled", $(this).val().trim() === "");
+        });
+
+        $(".movie-button").on("click", function () {
+            var my_api_key = "64e7a74b2de23c092d569c61618303f9";
+            var title = $("#autoComplete").val().trim();
+
+            if (title === "") {
+                $(".results").hide();
+                $(".fail").show();
+            } else {
+                $("#loader").fadeIn();
+                load_details(my_api_key, title);
+            }
+        });
+    });
+
+    // Function to show trailer button after loading movie details
+    function setTrailerLink(movieId) {
+        if (movieId) {
+            $("#trailerButton").show().off("click").on("click", function () {
+                window.location.href = "/trailer/" + movieId;
+            });
+        } else {
+            $("#trailerButton").hide();
+        }
+    }
+</script>
+<script src="reviews.js"></script>
+
+</body>
+</html>

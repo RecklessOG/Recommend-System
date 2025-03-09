@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Ratings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            margin: auto;
+            margin-top: 50px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+        }
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px;
+            background-color: #121212;
+        }
+        .home-button {
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .home-button:hover {
+            background-color: #cc0000;
+        }
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #ff4444;
+            color: white;
+        }
+        td {
+            background-color: #1e1e1e;
+        }
+        h2 {
+            color: red;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <a href="/" class="home-button">Home</a>
+    </div>
+
+    <div class="container">
+        <h2>Your Ratings</h2>
+        <table>
+            <tr>
+                <th>User</th>
+                <th>Movie</th>
+                <th>Rating</th>
+            </tr>
+            {% for rating in user_ratings %}
+            <tr>
+                <td>{{ rating[0] }} {{ rating[1] }}</td>
+                <td>{{ rating[2] }}</td>
+                <td>{{ rating[3] if rating[3] != 'Not Rated' else 'Not Rated' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="container">
+        <h2>Average Ratings per Movie</h2>
+        <table>
+            <tr>
+                <th>Movie</th>
+                <th>Average Rating</th>
+            </tr>
+            {% for avg in avg_ratings %}
+            <tr>
+                <td>{{ avg[0] }}</td>
+                <td>{{ avg[1] }}/5 ⭐</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

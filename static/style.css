@@ -1,0 +1,864 @@
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-image: url("../static/image.jpg"); /* Make sure this path is correct */
+    background-color: #181818;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+h1 {
+    font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #e50914;
+    font-weight: bold;
+    margin-top: 30px;
+    text-shadow: #000000 0px 0px 13px;
+}
+
+/* Movie Title */
+#name {
+    color: white;
+    padding: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    display: block;
+}
+
+/* Movie Container */
+.movie {
+    color: #fff;
+    margin-left: auto;
+    margin-right: auto;
+    resize: none;
+}
+
+.movie-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.movie-content > div {
+    margin: 20px;
+}
+
+/* Movie Poster */
+.poster {
+    -webkit-box-shadow: 0px 1px 15px 4px rgba(250,250,250,1);
+    -moz-box-shadow: 0px 1px 15px 4px rgba(250,250,250,1);
+    box-shadow: 0px 1px 15px 4px rgba(250,250,250,1);
+}
+
+/* Movie Details */
+#details {
+    margin-left: 50px;
+}
+
+/* Button Styling */
+.btn-block {
+    width: 15%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    color: #e4e0e0;
+}
+
+/* Hover Effects */
+.card:hover,
+.castcard:hover {
+    cursor: pointer;
+}
+
+/* Footer */
+.footer {
+    color: #e4e0e0;
+    text-align: right;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 100%;
+}
+
+/* Cast Image Effects */
+.cast-img {
+    filter: brightness(100%);
+    transition: all 0.75s ease;
+}
+
+.cast-img:hover {
+    filter: brightness(50%);
+    transition: all 0.75s ease;
+}
+
+/* Image Hover Effects */
+.fig {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: brightness(50%);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    left: 0;
+    opacity: 0;
+    transition: all 0.75s ease;
+}
+
+.fig:hover {
+    opacity: 1;
+    transition: all 0.75s ease;
+}
+
+/* AutoComplete Input */
+#autoComplete {
+    background-position: 98%;
+}
+
+/* Search Box */
+#name {
+    color: white;
+    padding: 1px;
+}
+
+/* Error Message */
+.fail {
+    display: none;
+    color: white;
+}
+
+/* Loader */
+#loader {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../static/loader.gif");
+    background-size: 40%;
+    background-position: 50% 50%;
+    background-color: rgba(255, 255, 255, 1);
+    background-repeat: no-repeat;
+    transition: background-image 0.2s ease-in-out;
+}
+
+#loader-text {
+    vertical-align: middle;
+    color: white;
+}
+
+/* Movie Title Under Image */
+.movie-title {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 5px;
+    border-radius: 5px;
+    display: block;
+}
+
+/* --- FIXED CAST CARD STYLING --- */
+.actor-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
+
+.character-name {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.card-body {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+}
+
+/* --- END FIX --- */
+
+/* Actor Popup Styles */
+.actor-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    background: rgba(20, 20, 20, 0.95); /* Dark background */
+    color: #ccc; /* Soft gray text */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    text-align: center;
+}
+
+.actor-popup img {
+    width: 180px;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.actor-popup .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 28px;
+    color: #999;
+}
+
+.actor-popup .close-btn:hover {
+    color: #bbb;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 650px) {
+    .actor-popup {
+        width: 80%;
+        padding: 20px;
+    }
+}
+
+/* Modal Background */
+#actorModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(10, 10, 10, 0.9); /* Darker modal background */
+}
+
+/* Modal Content Box */
+#actorModalContent {
+    background: #222; /* Deep charcoal gray */
+    margin: 10% auto;
+    padding: 25px;
+    border-radius: 10px;
+    width: 50%;
+    text-align: center;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+    color: #ccc; /* Light gray text */
+}
+
+/* Actor Image */
+#actorImage {
+    width: 160px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Actor Name */
+#actorName {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ddd;
+    margin-bottom: 5px;
+}
+
+/* Actor Info */
+#actorBirthday, #actorPlace {
+    font-size: 16px;
+    font-weight: bold;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+/* Biography */
+#actorBio {
+    font-size: 15px;
+    color: #aaa;
+    line-height: 1.5;
+    margin-top: 10px;
+    text-align: justify;
+    padding: 0 10px;
+}
+
+/* Close Button */
+#closeModal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: #444;
+    color: #ddd;
+    border: none;
+    padding: 7px 12px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+#closeModal:hover {
+    background: #666;
+}
+
+#trailerButtonContainer {
+    text-align: center;
+    margin-top: 20px; /* Space above */
+    margin-bottom: 20px; /* Space below */
+}
+
+.trailer-button {
+    background-color: #e50914; /* Netflix red */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the text and icon */
+    gap: 8px; /* Space between icon and text */
+    margin: 20px auto; /* Center horizontally */
+    transition: background 0.3s ease;
+    max-width: 250px; /* Prevent it from stretching too much */
+    text-align: center;
+}
+
+.trailer-button:hover {
+    background-color: #b20710; /* Darker red on hover */
+}
+
+.trailer-button::before {
+    content: "🎬"; /* Movie clapper emoji */
+    font-size: 18px;
+}
+
+/* Centering the Trailer and Button */
+.trailer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Perfect vertical centering */
+    min-height: 90vh; /* Reduce height slightly to move everything up */
+    padding-bottom: 30px; /* Avoid pushing content too far down */
+}
+
+.trailer-video {
+    width: 100%;
+    max-width: 800px;
+    height: 450px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.trailer-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 20px; /* Adjust space below title */
+}
+
+.go-back-button {
+    background-color: #e50914;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px; /* Adjust spacing */
+    transition: background 0.3s ease;
+}
+
+.go-back-button:hover {
+    background-color: #b20710;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: rgba(20, 20, 20, 0.85);
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
+    color: #ccc;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #e50914;
+    text-shadow: 0px 0px 5px #000;
+}
+
+/* Profile Edit Page Styling */
+.profile-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 600px;
+    margin: 50px auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+}
+
+.profile-container h1 {
+    font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #e50914;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: #000000 0px 0px 13px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border: 2px solid #e50914;
+}
+
+.save-btn {
+    background-color: #e50914;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+}
+
+.save-btn:hover {
+    background-color: #b20710;
+}
+
+.back-btn {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+}
+
+.back-btn:hover {
+    background-color: #444;
+}
+
+/* Review Section */
+.review-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background to match home page */
+    border-radius: 10px;
+    margin-top: 100px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+}
+
+/* Review Label */
+.review-label {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Review Form Fields (Textarea and Select) */
+.review-form textarea,
+.review-form select {
+    background-color: #fff;
+    color: #181818; /* Light color text for readability */
+    border: 1px solid #e50914; /* Matching red border */
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Textarea Specific */
+.review-form textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+/* Submit Button */
+.submit-review-btn {
+    background-color: #e50914; /* Netflix red */
+    border: 1px solid #e50914; /* Matching red border */
+    color: white;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 18px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+}
+
+.submit-review-btn:hover {
+    background-color: #b40610; /* Darker red on hover */
+    border-color: #b40610; /* Matching border color on hover */
+}
+
+/* Review Title */
+.review-title {
+    color: white;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* Ensure styles are scoped to the review page */
+.review-page .profile-dropdown {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.review-page .home-btn,
+.review-page .profile-btn {
+    background-color: #ff2a68; /* Red color for buttons */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px; /* Space between the buttons */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.review-page .home-btn:hover,
+.review-page .profile-btn:hover {
+    background-color: #ff1e57; /* Slightly darker red on hover */
+}
+
+.review-page .profile-btn {
+    font-weight: bold;
+}
+
+.review-page .dropdown-menu {
+    right: 0;
+    left: auto;
+    min-width: 200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.review-page .dropdown-item {
+    font-size: 16px;
+    padding: 10px 15px;
+}
+
+.review-page .dropdown-item:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.reviews-button-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.reviews-button {
+    background-color: #e50914; /* Netflix red */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease-in-out;
+}
+
+.reviews-button:hover {
+    background-color: #b20710; /* Darker red */
+}
+
+/* Main reviews container */
+.reviews-page-container {
+    max-width: 900px;
+    margin: 50px auto;
+    background: #141414; /* Dark theme */
+    padding: 20px;
+    border-radius: 10px;
+    color: #ffffff;
+    text-align: center;
+}
+
+/* Reviews heading */
+.reviews-page-container h2 {
+    color: #e50914; /* Netflix red */
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Review cards container */
+.reviews-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 0;
+}
+
+/* Individual review card */
+.review-card {
+    background: #222; /* Slightly lighter than background */
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Hover effect on review card */
+.review-card:hover {
+    transform: scale(1.05);
+}
+
+/* Reviewer name */
+.review-card .review-author {
+    color: #e50914; /* Netflix red */
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Review text */
+.review-card .review-text {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #ccc;
+}
+
+/* Back to Home button */
+.reviews-back-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #e50914; /* Netflix red */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+.reviews-back-button:hover {
+    background: #b20710; /* Darker red */
+}
+/* Modern Sort Dropdown */
+#sortOrder {
+    background: rgba(20, 20, 20, 0.9);
+    color: white;
+    border: 1px solid rgba(255, 0, 0, 0.6);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#sortOrder:hover {
+    background: rgba(255, 0, 0, 0.3);
+}
+
+#sortOrder:focus {
+    outline: none;
+    border-color: rgba(255, 0, 0, 0.9);
+    box-shadow: 0px 0px 8px rgba(255, 0, 0, 0.5);
+}
+
+/* Dropdown Arrow */
+#sortOrder::-ms-expand {
+    display: none;
+}
+
+/* Flash MESSAGE IN EDIT PROFILE CSS*/
+#flash-message-container {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 10px;
+}
+
+.flash-message {
+    background-color: #28a745; /* Green background */
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeOut 4s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+}
+.movies-container {
+    display: flex;
+    flex-wrap: wrap; /* Ensures responsiveness */
+    justify-content: center; /* Centers items horizontally */
+    gap: 20px; /* Adds spacing between items */
+    margin-top: 20px;
+}
+
+.movie-card {
+    width: 250px; /* Adjust width as needed */
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+}
+
+.movie-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Back to watchlist button in Reccmend .html*/
+.btn-watchlist {
+    background-color: rgba(255, 255, 255, 0.1); /* Matches dark theme */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease, color 0.3s ease;
+    position: absolute; /* Adjust position */
+    top: 20px; /* Distance from top */
+    left: 20px; /* Distance from left */
+}
+
+.btn-watchlist:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* Get Recommendations Button - Styled to Match Theme */
+a[href="/watchlist_recommendations"].btn {
+    display: block; /* Ensures proper positioning */
+    width: fit-content;
+    margin: 20px auto 0 auto; /* Centers button and moves it closer to the table */
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+    background-color: #e50914; /* Netflix red */
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* Hover Effect */
+a[href="/watchlist_recommendations"].btn:hover {
+    background-color: #b20710; /* Darker red for hover */
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Click Effect */
+a[href="/watchlist_recommendations"].btn:active {
+    transform: scale(0.95);
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Star Rating - Dark Mode Theme */
+.stars {
+    display: flex;
+    gap: 8px;
+    font-size: 28px;
+    cursor: pointer;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.star {
+    color: #555; /* Soft gray by default */
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.star:hover,
+.star.selected {
+    color: #ffcc00; /* Warm gold for selected stars */
+    text-shadow: 0px 0px 10px rgba(255, 204, 0, 0.8); /* Soft glow effect */

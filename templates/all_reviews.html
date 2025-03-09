@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Reviews</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="reviews-page-container">
+        <h2>User Reviews</h2>
+
+        {% if reviews %}
+            <div class="reviews-list">
+                {% for review in reviews %}
+                    <div class="review-card">
+                        <div class="review-author">{{ review.firstname }} {{ review.lastname }}</div>
+                        <p class="review-text">{{ review.review_text }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No reviews yet. Be the first to leave one!</p>
+        {% endif %}
+
+        <a href="{{ url_for('home') }}" class="reviews-back-button">Back to Home</a>
+    </div>
+
+</body>
+</html>
