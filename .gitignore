@@ -1,0 +1,15 @@
+# Ignore virtual environments  
+venv/  
+sklearn-env/  
+
+# Ignore Python cache files  
+__pycache__/  
+*.pyc  
+*.pyo  
+
+# Ignore IDE/editor settings  
+.idea/  
+.vscode/  
+
+# Ignore system files  
+.DS_Store  
